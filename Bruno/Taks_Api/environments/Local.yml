@@ -1,0 +1,8 @@
+name: Local
+variables:
+  - name: token
+    value: 2k5oVX5zPrI7onJmnoFDJSKfRTBegrBl
+  - name: userId
+    value: dWeVau35EpBo1FHA3e96gM2r4vXbhlYK
+  - name: taskId
+    value: cmuizorxk00028cu3nnsj1ven

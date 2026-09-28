@@ -1,0 +1,44 @@
+info:
+  name: Create Task
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{base_url}}/tasks"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Tâche 3",
+        "priority": "low"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setEnvVar("taskId", res.getBody().id);
+    - type: tests
+      code: |-
+        test("statut 201", function () {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("tâche créée avec un titre", function () {
+          expect(res.getBody().title).to.be.a("string").and.not.empty;
+        });
+
+        test("appartient au bon utilisateur", function () {
+          expect(res.getBody().userId).to.equal(bru.getEnvVar("userId"));
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

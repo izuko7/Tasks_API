@@ -1,0 +1,37 @@
+info:
+  name: Complete Task
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{base_url}}/tasks/{{taskId}}"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Tentative de modification par un autre user"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("statut 200", function () {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("completed est true", function () {
+          expect(res.getBody().completed).to.equal(true);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

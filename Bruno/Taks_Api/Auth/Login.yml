@@ -1,0 +1,43 @@
+info:
+  name: Login
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{base_url}}/api/auth/sign-in/email"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "test@test.com",
+        "password": "motdepasse123"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        bru.setEnvVar("token", res.getBody().token);
+        bru.setEnvVar("userId", res.getBody().user.id);
+    - type: tests
+      code: |-
+        test("statut 200", function () {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("token présent", function () {
+          expect(res.getBody().token).to.be.a("string");
+        });
+
+        test("email correct", function () {
+          expect(res.getBody().user.email).to.equal("test@test.com");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

@@ -1,5 +1,5 @@
 {
-	"name": "nexafood-api",
+	"name": "Tasks-api",
 	"version": "0.1.0",
 	"description": "NestJS API starter — Better Auth, Prisma, Zod, Biome",
 	"private": false,
@@ -12,7 +12,7 @@
 	"scripts": {
 		"dev": "nest start --watch --preserveWatchOutput",
 		"build": "nest build",
-		"start": "node dist/main.js",
+		"start": "node dist/src/main.js",
 		"check": "biome check .",
 		"check:fix": "biome check . --write",
 		"check-types": "tsc --noEmit",

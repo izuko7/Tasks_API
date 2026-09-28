@@ -1,0 +1,27 @@
+info:
+  name: DELETE
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{base_url}}/tasks/cmuizorxk00028cu3nnsj1ven"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("statut 404 (tâche d'un autre utilisateur)", function () {
+          expect(res.getStatus()).to.equal(404);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
