@@ -116,3 +116,160 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+# Tasks API
+
+API REST de gestion de tâches avec authentification, construite avec NestJS, Prisma et Better Auth.
+
+## Stack
+
+- Runtime / package manager : Bun
+- Framework : NestJS
+- Base de données : PostgreSQL
+- ORM : Prisma
+- Authentification : Better Auth (email/password + plugin `bearer`)
+- Validation : Zod (`nestjs-zod`)
+- Documentation API : Swagger
+- Tests manuels : Bruno
+
+## Prérequis
+
+- Bun
+- PostgreSQL en local (ou accessible)
+- Un client Bruno (facultatif, pour rejouer la collection de tests)
+
+## Installation
+
+\`\`\`bash
+bun install
+\`\`\`
+
+## Configuration
+
+Créer un fichier `.env` à la racine :
+
+\`\`\`env
+DATABASE_URL="postgresql://user:password@localhost:5432/nom_de_la_base?schema=public"
+BETTER_AUTH_SECRET="<généré avec: openssl rand -base64 32>"
+BETTER_AUTH_URL="http://localhost:3000"
+PORT=3000
+\`\`\`
+
+Créer la base de données manuellement (ex. via PgAdmin) avant de continuer.
+
+## Base de données
+
+\`\`\`bash
+bunx prisma generate
+bunx prisma migrate dev
+\`\`\`
+
+## Lancement
+
+\`\`\`bash
+bun run start:dev
+\`\`\`
+
+Le serveur démarre sur `http://localhost:3000`.
+
+## Documentation API (Swagger)
+
+Une fois le serveur lancé : `http://localhost:3000/docs`
+
+Pour tester une route protégée depuis Swagger :
+1. Récupérer un token via `POST /api/auth/sign-in/email`
+2. Cliquer sur "Authorize" en haut de la page
+3. Coller le token (sans le mot "Bearer")
+
+## Authentification
+
+Toutes les routes `/tasks` sont protégées. Il faut d'abord créer un compte et se connecter pour obtenir un token.
+
+### Inscription
+\`\`\`
+POST /api/auth/sign-up/email
+Content-Type: application/json
+
+{
+  "name": "...",
+  "email": "...",
+  "password": "..."
+}
+\`\`\`
+
+### Connexion
+\`\`\`
+POST /api/auth/sign-in/email
+Content-Type: application/json
+
+{
+  "email": "...",
+  "password": "..."
+}
+\`\`\`
+
+La réponse contient un `token`, à utiliser ensuite dans le header :
+\`\`\`
+Authorization: Bearer <token>
+\`\`\`
+
+## Routes disponibles
+
+| Méthode | Route | Description |
+|---|---|---|
+| POST | /tasks | Créer une tâche |
+| GET | /tasks | Lister ses tâches (filtres `completed`, `priority`) |
+| GET | /tasks/:id | Récupérer une tâche |
+| PATCH | /tasks/:id | Modifier une tâche |
+| PATCH | /tasks/:id/complete | Marquer une tâche comme terminée |
+| DELETE | /tasks/:id | Supprimer une tâche |
+
+Chaque route est restreinte aux tâches appartenant à l'utilisateur authentifié (isolation par `userId`).
+
+## Sécurité
+
+- Guard global (Better Auth) : bloque toute requête sans session/token valide.
+- Guard applicatif (`SessionGuard`) : vérification explicite de la présence de l'utilisateur avant d'entrer dans le controller.
+- Chaque requête sur une tâche vérifie que celle-ci appartient bien à l'utilisateur connecté (404 sinon, jamais 403, pour ne pas révéler l'existence de la ressource).
+
+## Tests manuels (Bruno)
+
+Une collection Bruno est fournie dans `./bruno` *(adapter le chemin réel)*.
+
+Ordre d'exécution recommandé :
+1. `Auth/Register`
+2. `Auth/Login`
+3. `Tasks/Create`
+4. `Tasks/Find All`
+5. `Tasks/Find One`
+6. `Tasks/Update`
+7. `Tasks/Complete`
+8. `Tasks/Remove`
+9. Scénario sécurité : créer un second compte et vérifier qu'il ne peut pas accéder aux tâches du premier (404 attendu).
+
+## Structure du projet
+
+\`\`\`
+src/
+├── auth/
+│   ├── auth.module.ts
+│   └── auth.cli.ts
+├── common/
+│   └── guards/
+│       └── session.guard.ts
+├── modules/
+│   └── tasks/
+│       ├── dto/
+│       ├── tasks.controller.ts
+│       ├── tasks.service.ts
+│       └── tasks.module.ts
+├── prisma/
+├── app.module.ts
+└── main.ts
+\`\`\`
+
+## Ce qui reste à faire
+
+- [ ] Pagination sur `GET /tasks` *(bonus)*
+- [ ] Recherche textuelle sur les tâches *(bonus)*
