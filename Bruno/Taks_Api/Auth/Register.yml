@@ -10,9 +10,9 @@ http:
     type: json
     data: |-
       {
-        "email": "hacker2@test.com",
-        "password": "motdepasse123",
-        "name": "Autre User"
+        "email": "Dago@test.com",
+        "password": "Motdepasse1234",
+        "name": "Junior"
       }
   auth: inherit
 
@@ -34,7 +34,7 @@ runtime:
 
         test("email correspond à la requête", function () {
           const requestBody = req.getBody();
-          expect(res.getBody().user.email).to.equal(requestBody.email);
+          expect(res.getBody().user.email).to.equal(requestBody.email.toLowerCase());
         });
 
 settings:

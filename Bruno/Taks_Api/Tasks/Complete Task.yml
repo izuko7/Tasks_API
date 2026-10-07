@@ -13,7 +13,7 @@ http:
     type: json
     data: |-
       {
-        "title": "Tentative de modification par un autre user"
+        "completed": true
       }
   auth: inherit
 

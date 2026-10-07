@@ -13,8 +13,9 @@ http:
     type: json
     data: |-
       {
-        "title": "Tâche 3",
-        "priority": "low"
+        "title": "Apprendre React",
+        "description": "juste pour apprendre",
+        "priority": "high"
       }
   auth: inherit
 

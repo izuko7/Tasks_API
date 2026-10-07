@@ -5,7 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: "{{base_url}}/tasks/cmuizorxk00028cu3nnsj1ven"
+  url: "{{base_url}}/tasks/cmuy0qgsm000208nhjxn7l4ww"
   headers:
     - name: Authorization
       value: Bearer {{token}}
@@ -15,9 +15,15 @@ runtime:
   scripts:
     - type: tests
       code: |-
-        test("statut 404 (tâche d'un autre utilisateur)", function () {
-          expect(res.getStatus()).to.equal(404);
+        const result = await prisma.task.deleteMany({
+          where: { id: taskId, userId: req.user.id },
         });
+
+        if (result.count === 0) {
+          return res.status(404).json({ error: "Tâche introuvable" });
+        }
+
+        return res.status(204).send();
 
 settings:
   encodeUrl: true

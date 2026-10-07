@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "email": "test@test.com",
-        "password": "motdepasse123"
+        "email": "Dago@test.com",
+        "password": "Motdepasse1234"
       }
   auth: inherit
 
@@ -32,7 +32,8 @@ runtime:
         });
 
         test("email correct", function () {
-          expect(res.getBody().user.email).to.equal("test@test.com");
+          const requestBody = req.getBody();
+          expect(res.getBody().user.email).to.equal(requestBody.email.toLowerCase());
         });
 
 settings:
