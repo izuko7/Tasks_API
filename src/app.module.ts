@@ -8,8 +8,8 @@ import { AppService } from './app.service.js';
 import { AuthModule } from './auth/auth.module.js';
 import { envSchema } from './config/env.schema.js';
 import { ExampleModule } from './modules/example/example.module.js';
-import { PrismaModule } from './prisma/prisma.module.js';
 import { TasksModule } from './modules/Tasks/tasks.module.js';
+import { PrismaModule } from './prisma/prisma.module.js';
 
 @Module({
 	imports: [
@@ -27,7 +27,7 @@ import { TasksModule } from './modules/Tasks/tasks.module.js';
 		PrismaModule,
 		AuthModule,
 		ExampleModule,
-		TasksModule
+		TasksModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
