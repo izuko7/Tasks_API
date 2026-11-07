@@ -14,7 +14,7 @@ http:
 runtime:
   variables:
     - name: taskId
-      value: cmuyaz3xx000008o3eickkt9k
+      value: cmw6gzm870000jgu3ctu9npgp
   scripts:
     - type: after-response
       code: bru.setEnvVar("taskId", res.getBody().id);

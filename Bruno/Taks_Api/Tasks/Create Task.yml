@@ -13,9 +13,9 @@ http:
     type: json
     data: |-
       {
-        "title": "Test projet inexistant",
-        "priority": "low",
-        "projectId": "inexistant"
+        "title": "travailler avec socket.io",
+        "description": "juste pour apprendre",
+        "priority": "low"
       }
   auth: inherit
 
