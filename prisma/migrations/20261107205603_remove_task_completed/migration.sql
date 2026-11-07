@@ -5,7 +5,7 @@
 
 */
 
-UPDATE "Task" SET "status" = 'done' WHERE "completed" = true AND "status" <> 'done';
+UPDATE "Task" SET "status" = 'done' WHERE "completed" = true AND "status" <> 'done'
 
 -- AlterTable
 ALTER TABLE "Task" DROP COLUMN "completed";
