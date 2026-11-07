@@ -13,9 +13,9 @@ http:
     type: json
     data: |-
       {
-        "title": "travailler avec React",
-        "description": "juste pour apprendre",
-        "priority": "low"
+        "title": "Test projet inexistant",
+        "priority": "low",
+        "projectId": "inexistant"
       }
   auth: inherit
 
