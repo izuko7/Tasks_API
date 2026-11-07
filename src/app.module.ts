@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module.js';
 import { envSchema } from './config/env.schema.js';
 import { ExampleModule } from './modules/example/example.module.js';
 import { TasksModule } from './modules/Tasks/tasks.module.js';
+import { ProjectModule } from './modules/Projects/project.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 
 @Module({
@@ -22,12 +23,13 @@ import { PrismaModule } from './prisma/prisma.module.js';
 				transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined,
 			},
 		}),
-		ThrottlerModule.forRoot([{ ttl: 60000, limit: 20 }]),
+		ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
 		TerminusModule,
 		PrismaModule,
 		AuthModule,
 		ExampleModule,
 		TasksModule,
+		ProjectModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

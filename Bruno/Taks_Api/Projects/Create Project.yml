@@ -1,0 +1,57 @@
+info:
+  name: Create Project
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{base_url}}/projects"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Refonte produit",
+        "description": "Une expérience plus simple, rapide et humaine.",
+        "dueDate": "2026-11-28T00:00:00.000Z"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setEnvVar("projectId", res.getBody().id);
+    - type: tests
+      code: |-
+        test("statut 201", function () {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+        test("projet créé avec le bon nom", function () {
+          const requestBody = req.getBody();
+          expect(res.getBody().name).to.equal(requestBody.name);
+        });
+
+        test("progression initiale à zéro", function () {
+          const body = res.getBody();
+          expect(body.tasksTotal).to.equal(0);
+          expect(body.tasksDone).to.equal(0);
+          expect(body.progress).to.equal(0);
+        });
+
+        test("la liste des tâches n'est pas renvoyée", function () {
+          expect(res.getBody()).to.not.have.property("tasks");
+        });
+
+        test("appartient au bon utilisateur", function () {
+          expect(res.getBody().userId).to.equal(bru.getEnvVar("userId"));
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
