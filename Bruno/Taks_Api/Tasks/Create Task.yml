@@ -13,9 +13,9 @@ http:
     type: json
     data: |-
       {
-        "title": "travailler avec socket.io",
+        "title": "Finir la création de bot pour les vidéos télégram",
         "description": "juste pour apprendre",
-        "priority": "low"
+        "priority": "high"
       }
   auth: inherit
 

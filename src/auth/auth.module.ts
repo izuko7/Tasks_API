@@ -3,6 +3,6 @@ import { AuthModule as BetterAuthModule } from '@thallesp/nestjs-better-auth';
 import { auth } from './auth.cli.js';
 
 @Module({
-	imports: [BetterAuthModule.forRoot({ auth })],
+	imports: [BetterAuthModule.forRoot({ auth, disableTrustedOriginsCors: true })],
 })
 export class AuthModule {}

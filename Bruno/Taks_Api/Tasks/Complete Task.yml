@@ -13,7 +13,7 @@ http:
     type: json
     data: |-
       {
-        "completed": true
+        "status": "done"
       }
   auth: inherit
 
